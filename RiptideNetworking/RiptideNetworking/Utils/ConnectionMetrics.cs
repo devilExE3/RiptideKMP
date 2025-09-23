@@ -110,6 +110,28 @@ namespace Riptide.Utils
             ReliableUniques = 0;
         }
 
+        int _prevBytesOut, _prevBytesIn;
+        /// <summary>
+        /// Gets number of bytes received since last call of <see cref="SendRate"/>
+        /// </summary>
+        /// <returns>The number of bytes</returns>
+        public int SendRate()
+        {
+            int delta = BytesOut - _prevBytesOut;
+            _prevBytesOut = BytesOut;
+            return delta;
+        }
+        /// <summary>
+        /// Gets number of bytes sent since last call of <see cref="RecvRate"/>
+        /// </summary>
+        /// <returns>The number of bytes</returns>
+        public int RecvRate()
+        {
+            int delta = BytesIn - _prevBytesIn;
+            _prevBytesIn = BytesIn;
+            return delta;
+        }
+
         /// <summary>Updates the metrics associated with receiving an unreliable message.</summary>
         /// <param name="byteCount">The number of bytes that were received.</param>
         internal void ReceivedUnreliable(int byteCount)

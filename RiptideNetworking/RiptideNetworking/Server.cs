@@ -70,7 +70,7 @@ namespace Riptide
         /// <summary>The underlying transport's server that is used for sending and receiving data.</summary>
         private IServer transport;
         /// <summary>All currently unused client IDs.</summary>
-        private Queue<ushort> availableClientIds;
+        private SortedSet<ushort> availableClientIds;
 
         /// <summary>Handles initial setup.</summary>
         /// <param name="transport">The transport to use for sending and receiving data.</param>
@@ -446,7 +446,7 @@ namespace Riptide
             transport.Close(client);
 
             if (clients.Remove(client.Id))
-                availableClientIds.Enqueue(client.Id);
+                availableClientIds.Add(client.Id);
 
             if (client.IsConnected)
                 OnClientDisconnected(client, reason); // Only run if the client was ever actually connected
@@ -488,9 +488,9 @@ namespace Riptide
             if (MaxClientCount > ushort.MaxValue - 1)
                 throw new Exception($"A server's max client count may not exceed {ushort.MaxValue - 1}!");
 
-            availableClientIds = new Queue<ushort>(MaxClientCount);
+            availableClientIds = new SortedSet<ushort>();
             for (ushort i = 1; i <= MaxClientCount; i++)
-                availableClientIds.Enqueue(i);
+                availableClientIds.Add(i);
         }
 
         /// <summary>Retrieves an available client ID.</summary>
@@ -498,7 +498,11 @@ namespace Riptide
         private ushort GetAvailableClientId()
         {
             if (availableClientIds.Count > 0)
-                return availableClientIds.Dequeue();
+            {
+                ushort nextId = availableClientIds.First();
+                availableClientIds.Remove(nextId);
+                return nextId;
+            }
             
             RiptideLogger.Log(LogType.Error, LogName, "No available client IDs, assigned 0!");
             return 0;

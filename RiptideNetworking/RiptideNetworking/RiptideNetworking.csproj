@@ -27,12 +27,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>bin\Debug\netstandard2.0\RiptideNetworking.xml</DocumentationFile>
     <OutputPath>bin\Debug\netstandard2.0\</OutputPath>
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>bin\Release\netstandard2.0\</OutputPath>
     <DocumentationFile>bin\Release\netstandard2.0\RiptideNetworking.xml</DocumentationFile>
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
