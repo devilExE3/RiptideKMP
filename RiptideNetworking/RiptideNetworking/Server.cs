@@ -551,7 +551,7 @@ namespace Riptide
         protected virtual void OnClientConnected(Connection client)
         {
             RiptideLogger.Log(LogType.Info, LogName, $"Client {client.Id} ({client}) connected successfully!");
-            SendClientConnected(client);
+            //SendClientConnected(client); // don't broadcast this message
             ClientConnected?.Invoke(this, new ServerConnectedEventArgs(client));
         }
 
@@ -593,7 +593,7 @@ namespace Riptide
         protected virtual void OnClientDisconnected(Connection connection, DisconnectReason reason)
         {
             RiptideLogger.Log(LogType.Info, LogName, $"Client {connection.Id} ({connection}) disconnected: {Helper.GetReasonString(reason)}.");
-            SendClientDisconnected(connection.Id);
+            //SendClientDisconnected(connection.Id); // don't broadcast this message
             ClientDisconnected?.Invoke(this, new ServerDisconnectedEventArgs(connection, reason));
         }
         #endregion
